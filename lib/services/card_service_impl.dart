@@ -47,26 +47,15 @@ class CardServiceImpl extends CardService {
     // Not enoght cards left in deck?
     // Remember to discard old cards
     if (cardsLeft < 0) {
-      print("I shuffle now and reset the deck " + deck.length.toString());
       deck = [...shuffleCards(discardPile), ...deck];
-      print("I shuffledthe deck " + deck.length.toString());
 
       discardPile = [];
       deckSize = getDeckSize();
       cardsLeft = deckSize - amount;
     }
 
-    print("deckSize " + deckSize.toString());
-    print("cardsLeft " + cardsLeft.toString());
-
-    List<PlayingCard> drawnCards =
-        deck.getRange(cardsLeft, deckSize).toList(growable: false);
+    List<PlayingCard> drawnCards = deck.getRange(cardsLeft, deckSize).toList();
     deck.removeRange(cardsLeft, deckSize);
-
-    for (var i = 0; i < drawnCards.length; ++i) {
-      print(
-          drawnCards[i].suit.toString() + " " + drawnCards[i].value.toString());
-    }
 
     return drawnCards;
   }

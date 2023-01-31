@@ -54,44 +54,40 @@ class _BlackJackHomePageState extends State<BlackJackHomePage>
     return Scaffold(
       backgroundColor: Colors.green[800],
       body: Center(
-        child: Container(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    getFilppendCard(currentHands[1]),
-                    getFilppendCard(currentHands[2]),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        newGame();
-                      },
-                      child: card(Suit.clubs, CardValue.ace),
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    getFilppendCard(currentHands[2]),
-                    getFilppendCard(currentHands[3]),
-                  ],
-                ),
-              ]),
-        ),
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              getFilppendCard(currentHands[1]),
+              getFilppendCard(currentHands[2]),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  newGame();
+                },
+                child: card(Suit.clubs, CardValue.ace),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              getFilppendCard(currentHands[2]),
+              getFilppendCard(currentHands[3]),
+            ],
+          ),
+        ]),
       ),
     );
   }
 
   Widget getFilppendCard(PlayingCard playingCard) {
-    return ClipRRect(
-        child: SizedBox(
+    return SizedBox(
       height: 180,
       child: Transform(
         alignment: FractionalOffset.center,
@@ -117,7 +113,7 @@ class _BlackJackHomePageState extends State<BlackJackHomePage>
                 ),
         ),
       ),
-    ));
+    );
   }
 
   void newGame() {
@@ -128,4 +124,17 @@ class _BlackJackHomePageState extends State<BlackJackHomePage>
     }
     currentHands = _cardService.drawCards(4);
   }
+}
+
+Widget card(Suit suit, CardValue cardValue) {
+  return ClipRRect(
+      child: SizedBox(
+          height: 180,
+          child: PlayingCardView(
+            card: PlayingCard(
+              suit,
+              cardValue,
+            ),
+            showBack: true,
+          )));
 }

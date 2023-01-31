@@ -3,14 +3,18 @@ import 'package:flutter_blackjack_pkg/flutter_blackjack_pkg.dart';
 import 'package:flutter_blackjack_pkg/services/service_locator.dart';
 
 void main() {
+  // TODO: Später verschieben
+  setupGameService();
   setupCardService();
-  runApp(MyApp());
+  runApp(const MyApp());
   // runApp(MaterialApp(home: CardHomeView()));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return BlackJackApp();
+    return const BlackJackApp();
   }
 }
