@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   get_it: ^7.2.0
-  playing_cards: ^0.3.1+9
+  playing_cards: 0.3.1+9
 
 dev_dependencies:
   flutter_test:

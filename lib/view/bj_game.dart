@@ -64,88 +64,14 @@ class _BlackJoackGameState extends State<BlackJoackGame> {
               scrollDirection: Axis.horizontal,
               children: [
                 for (var card in _gameService.getBank().hand) ...[
-                  CardAnimatedWidget(card)
+                  cardWidget(card, false)
+                  // CardAnimatedWidget(card) // TODO
                 ]
               ],
             ),
           ),
         ],
       ),
-
-      // Center(
-      //   child:
-      //       Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-
-      //     // GridView.count(
-      //     //     primary: false,
-      //     //     padding: const EdgeInsets.all(20),
-      //     //     crossAxisSpacing: 10,
-      //     //     mainAxisSpacing: 10,
-      //     //     crossAxisCount: 3,
-      //     //     children: <Widget>[
-      //     //       for (var card in _gameService.getPlayer().hand) ...[
-      //     //         Flexible(
-      //     //           fit: FlexFit.loose,
-      //     //           child:
-      //     //               CardAnimatedWidget(PlayingCard(card.suit, card.value)),
-      //     //         )
-      //     //       ]
-      //     //     ]),
-      //     // Row(
-      //     //     mainAxisSize: MainAxisSize.min,
-      //     //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //     //     crossAxisAlignment: CrossAxisAlignment.end,
-      //     //     children: [
-      //     //       for (MapEntry entry
-      //     //           in _gameService.getPlayer().hand.asMap().entries)
-      //     //         Flexible(
-      //     //           fit: FlexFit.loose,
-      //     //           child: CardAnimatedWidget(
-      //     //               PlayingCard(entry.value.suit, entry.value.value)),
-      //     //         )
-      //     //     ]),
-      //     // Row(
-      //     //   mainAxisAlignment: MainAxisAlignment.center,
-      //     //   children: [
-      //     //     for (var card in _gameService.getPlayer().hand) ...[
-      //     //       Flexible(
-      //     //         fit: FlexFit.loose,
-      //     //         child: CardAnimatedWidget(PlayingCard(card.suit, card.value)),
-      //     //       )
-      //     //     ]
-      //     //   ],
-      //     // ),
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         GestureDetector(
-      //           onTap: () {
-      //             _gameService.drawCard();
-      //             setState(() {});
-      //             print("object");
-      //           },
-      //           child: card(Suit.clubs, CardValue.ace),
-      //         ),
-      //         ElevatedButton(
-      //           style: ElevatedButton.styleFrom(
-      //               textStyle: const TextStyle(fontSize: 20)),
-      //           onPressed: () {
-      //             _gameService.endTurn();
-      //           },
-      //           child: const Text('Finish'),
-      //         ),
-      //       ],
-      //     ),
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       children: [
-      //         for (var card in _gameService.getBank().hand) ...[
-      //           CardAnimatedWidget(PlayingCard(card.suit, card.value))
-      //         ]
-      //       ],
-      //     ),
-      //   ]),
-      // ),
     );
   }
 }
