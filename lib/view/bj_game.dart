@@ -14,6 +14,7 @@ class BlackJackGame extends StatefulWidget {
 }
 
 class _BlackJackGameState extends State<BlackJackGame> {
+  PlayingCard deckTopCard = PlayingCard(Suit.joker, CardValue.joker_1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,18 +36,6 @@ class _BlackJackGameState extends State<BlackJackGame> {
                 ]
               ],
             ),
-          ),
-          const SizedBox(height: 12.5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
-                children: [
-                  Text("Won: ${_gameService.getDealer().won}"),
-                  Text("Lost: ${_gameService.getDealer().lose}"),
-                ],
-              ),
-            ],
           ),
           const SizedBox(height: 25),
           SizedBox(
@@ -71,9 +60,9 @@ class _BlackJackGameState extends State<BlackJackGame> {
                           cardWidget(
                               PlayingCard(Suit.joker, CardValue.joker_1), true),
                           cardWidget(
-                              PlayingCard(Suit.joker, CardValue.joker_1), true),
+                              PlayingCard(Suit.joker, CardValue.joker_2), true),
                           cardWidget(
-                              PlayingCard(Suit.joker, CardValue.joker_1), true),
+                              PlayingCard(Suit.joker, CardValue.joker_2), true),
                         ],
                       ),
                     ),
@@ -128,15 +117,56 @@ class _BlackJackGameState extends State<BlackJackGame> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  Text("Won: ${_gameService.getPlayer().won}"),
-                  Text("Lost: ${_gameService.getPlayer().lose}"),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(left: 30),
+                child: Column(
+                  children: [
+                    Text(
+                      "Won: ${_gameService.getPlayer().won}",
+                      style: const TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Lost: ${_gameService.getPlayer().lose}",
+                      style: const TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 50),
+              Expanded(
+                child: Center(
+                  child: Row(
+                    children: [
+                      IconButton(
+                        iconSize: 45,
+                        onPressed: () {
+                          _gameService.getPlayer().setBeLower();
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.arrow_left),
+                      ),
+                      Text(
+                        _gameService.getPlayer().bet.toString(),
+                        style: const TextStyle(
+                            fontSize: 22.0, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        iconSize: 45,
+                        onPressed: () {
+                          _gameService.getPlayer().setBetHigher();
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.arrow_right),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 12.5),
+          const SizedBox(height: 25),
           SizedBox(
             height: 180,
             width: _gameService.getPlayer().hand.length * 90,
@@ -147,6 +177,19 @@ class _BlackJackGameState extends State<BlackJackGame> {
                 ]
               ],
             ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.wallet),
+              const SizedBox(width: 7.5),
+              Text(
+                _gameService.getPlayer().wallet.toString(),
+                style: const TextStyle(
+                    fontSize: 22.0, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           const Spacer(),
         ],

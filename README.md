@@ -6,8 +6,7 @@ Home            |  In Game
 ![](assets/read_me/screenshot_game_home.png)  |  ![](assets/read_me/screenshot_game_in_game.png)
 
 ## Features
-- Easy to understand game rules
-- Simple and intuitive user interface
+- Chip betting system
 - Fancy card rotation animation
 
 ## How to Play

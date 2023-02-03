@@ -6,6 +6,7 @@ import 'package:playing_cards/playing_cards.dart';
 import 'card_service.dart';
 
 const HIGHES_SCORE_VALUE = 21;
+const int DEALER_MIN_SCORE = 17;
 
 class GameServiceImpl extends GameService {
   late Player player;
@@ -28,17 +29,17 @@ class GameServiceImpl extends GameService {
   }
 
   @override
-  void drawCard() {
-    player.hand.add(_cardService.drawCard());
+  PlayingCard drawCard() {
+    final drwanCard = _cardService.drawCard();
+    player.hand.add(drwanCard);
     if (getScore(player) >= HIGHES_SCORE_VALUE) {
       endTurn();
-    } // Bring to view
+    }
+    return drwanCard;
   }
 
   @override
   void endTurn() {
-    const int DEALER_MIN_SCORE = 17;
-
     // Dealer turn
     int dealerScore = getScore(dealer);
     while (dealerScore < DEALER_MIN_SCORE) {
@@ -46,6 +47,7 @@ class GameServiceImpl extends GameService {
       dealerScore = getScore(dealer);
     }
 
+    // Get burnt players
     final playerScore = getScore(player);
     final bool burntDealer = (dealerScore > HIGHES_SCORE_VALUE);
     final bool burntPlayer = (playerScore > HIGHES_SCORE_VALUE);
@@ -70,12 +72,14 @@ class GameServiceImpl extends GameService {
     gameState = GameState.playerWon;
     player.won += 1;
     dealer.lose += 1;
+    player.wonBet();
   }
 
   void dealerWon() {
     gameState = GameState.dealerWon;
     dealer.won += 1;
     player.lose += 1;
+    player.lostBet();
   }
 
   @override
