@@ -1,6 +1,10 @@
 # Blackjack Game as Flutter Package
 This is a simple and fun blackjack game developed in Flutter. The game follows the classic rules of blackjack, where the goal is to beat the dealer by having a hand value of 21 or as close as possible to 21.
 
+Home            |  In Game
+:-------------------------:|:-------------------------:
+![](assets/read_me/screenshot_game_home.png)  |  ![](assets/read_me/screenshot_game_in_game.png)
+
 ## Features
 - Easy to understand game rules
 - Simple and intuitive user interface

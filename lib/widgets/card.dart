@@ -5,7 +5,7 @@ import 'package:playing_cards/playing_cards.dart';
 
 ShapeBorder shape = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(8),
-    side: BorderSide(color: Colors.black, width: 1));
+    side: const BorderSide(color: Colors.black, width: 1));
 
 class CardAnimatedWidget extends StatefulWidget {
   final PlayingCard playingCard;
@@ -98,6 +98,7 @@ Widget cardWidget(PlayingCard card, bool showBack) {
           child: PlayingCardView(
             card: card,
             showBack: showBack,
+            elevation: .75,
             shape: shape,
           )));
 }

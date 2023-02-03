@@ -1,9 +1,9 @@
 import 'package:flutter_blackjack_pkg/models/player_model.dart';
+import 'package:flutter_blackjack_pkg/services/card_service_impl.dart';
 import 'package:flutter_blackjack_pkg/services/game_service.dart';
 import 'package:playing_cards/playing_cards.dart';
 
 import 'card_service.dart';
-import 'service_locator.dart';
 
 const HIGHES_SCORE_VALUE = 21;
 
@@ -17,7 +17,7 @@ class GameServiceImpl extends GameService {
     player = Player(_cardService.drawCards(2));
   }
 
-  final CardService _cardService = getIt<CardService>();
+  final CardService _cardService = CardServiceImpl();
 
   @override
   void startNewGame() {
@@ -31,7 +31,6 @@ class GameServiceImpl extends GameService {
   void drawCard() {
     player.hand.add(_cardService.drawCard());
     if (getScore(player) >= HIGHES_SCORE_VALUE) {
-      print("game end");
       endTurn();
     } // Bring to view
   }
@@ -120,24 +119,19 @@ int mapCardValueRules(List<PlayingCard> cards) {
   final sumStandardCards = getSumOfStandardCards(standardCards);
 
   int acesAmount = cards.length - standardCards.length;
-  print("acesAmount: $acesAmount");
   if (acesAmount == 0) {
     return sumStandardCards;
   }
 
-  print("sumStandardCards: $sumStandardCards");
   // Special case: Ace could be value 1 or 11
   final pointsLeft = HIGHES_SCORE_VALUE - sumStandardCards;
   final oneAceIsEleven = 11 + (acesAmount - 1);
 
   // One Ace with value 11 fits
   if (pointsLeft >= oneAceIsEleven) {
-    print(
-        "sumStandardCards + oneAceIsEleven: ${sumStandardCards + oneAceIsEleven}");
     return sumStandardCards + oneAceIsEleven;
   }
 
-  print("sumStandardCards + acesAmount: ${sumStandardCards + acesAmount}");
   return sumStandardCards + acesAmount;
 }
 

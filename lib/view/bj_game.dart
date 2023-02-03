@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_blackjack_pkg/card.dart';
+import 'package:flutter_blackjack_pkg/widgets/card.dart';
 import 'package:flutter_blackjack_pkg/services/game_service.dart';
+import 'package:flutter_blackjack_pkg/services/game_service_impl.dart';
 import 'package:playing_cards/playing_cards.dart';
 
-import '../services/service_locator.dart';
-
-GameService _gameService = getIt<GameService>();
+GameService _gameService = GameServiceImpl();
 
 class BlackJackGame extends StatefulWidget {
   const BlackJackGame({super.key});
@@ -67,8 +64,19 @@ class _BlackJackGameState extends State<BlackJackGame> {
                         setState(() {});
                       }
                     },
-                    child: cardWidget(
-                        PlayingCard(Suit.joker, CardValue.joker_1), true),
+                    child: SizedBox(
+                      width: 150,
+                      child: FlatCardFan(
+                        children: [
+                          cardWidget(
+                              PlayingCard(Suit.joker, CardValue.joker_1), true),
+                          cardWidget(
+                              PlayingCard(Suit.joker, CardValue.joker_1), true),
+                          cardWidget(
+                              PlayingCard(Suit.joker, CardValue.joker_1), true),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -85,9 +93,7 @@ class _BlackJackGameState extends State<BlackJackGame> {
                             } else {
                               _gameService.startNewGame();
                             }
-                            setState(() {
-                              print(_gameService.getGameState());
-                            });
+                            setState(() {});
                           },
                           child: Text((() {
                             if (_gameService.getGameState() !=
