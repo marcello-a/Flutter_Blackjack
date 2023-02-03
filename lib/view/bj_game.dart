@@ -85,6 +85,8 @@ class _BlackJackGameState extends State<BlackJackGame> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromRGBO(139, 0, 0, 1),
                               textStyle: const TextStyle(fontSize: 20)),
                           onPressed: () {
                             if (_gameService.getGameState() ==
