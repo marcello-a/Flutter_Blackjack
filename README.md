@@ -8,6 +8,7 @@ Home            |  In Game
 ## Features
 - Easy to understand game rules
 - Simple and intuitive user interface
+- Fancy card rotation animation
 
 ## How to Play
 1. Start the game by tapping the "New Game" button.
