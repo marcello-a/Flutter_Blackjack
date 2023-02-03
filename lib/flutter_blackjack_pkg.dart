@@ -11,9 +11,11 @@ class BlackJackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setupGameService();
+    setupCardService();
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlackJoackGame(),
+      home: BlackJackGame(),
     );
   }
 }

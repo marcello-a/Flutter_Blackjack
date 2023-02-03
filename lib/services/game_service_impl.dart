@@ -9,34 +9,74 @@ const HIGHES_SCORE_VALUE = 21;
 
 class GameServiceImpl extends GameService {
   late Player player;
-  late Player bank;
+  late Player dealer;
+  GameState gameState = GameState.equal;
 
   GameServiceImpl() {
+    dealer = Player(_cardService.drawCards(2));
     player = Player(_cardService.drawCards(2));
-    bank = Player(_cardService.drawCards(2));
   }
 
   final CardService _cardService = getIt<CardService>();
 
   @override
   void startNewGame() {
-    // if (currentHands.isNotEmpty) {
-    //   _cardService.discardCards(currentHands);
-    // }
+    player.hand = _cardService.drawCards(2);
+    dealer.hand = _cardService.drawCards(2);
+    _cardService.new52Deck();
+    gameState = GameState.playerActive;
   }
+
   @override
   void drawCard() {
     player.hand.add(_cardService.drawCard());
-    getScore(player); // Bring to view
+    if (getScore(player) >= HIGHES_SCORE_VALUE) {
+      print("game end");
+      endTurn();
+    } // Bring to view
   }
 
   @override
   void endTurn() {
-    // decke karten auf von bank
-    // checke score
     const int DEALER_MIN_SCORE = 17;
-    // show winner
-    // change button to new game
+
+    // Dealer turn
+    int dealerScore = getScore(dealer);
+    while (dealerScore < DEALER_MIN_SCORE) {
+      dealer.hand.add(_cardService.drawCard());
+      dealerScore = getScore(dealer);
+    }
+
+    final playerScore = getScore(player);
+    final bool burntDealer = (dealerScore > HIGHES_SCORE_VALUE);
+    final bool burntPlayer = (playerScore > HIGHES_SCORE_VALUE);
+
+    // Find game result
+    if (burntDealer && burntPlayer) {
+      gameState = GameState.equal;
+    } else if (dealerScore == playerScore) {
+      gameState = GameState.equal;
+    } else if (burntDealer && playerScore <= HIGHES_SCORE_VALUE) {
+      playerWon();
+    } else if (burntPlayer && dealerScore <= HIGHES_SCORE_VALUE) {
+      dealerWon();
+    } else if (dealerScore < playerScore) {
+      playerWon();
+    } else if (dealerScore > playerScore) {
+      dealerWon();
+    }
+  }
+
+  void playerWon() {
+    gameState = GameState.playerWon;
+    player.won += 1;
+    dealer.lose += 1;
+  }
+
+  void dealerWon() {
+    gameState = GameState.dealerWon;
+    dealer.won += 1;
+    player.lose += 1;
   }
 
   @override
@@ -45,16 +85,29 @@ class GameServiceImpl extends GameService {
   }
 
   @override
-  Player getBank() {
-    return bank;
+  Player getDealer() {
+    return dealer;
   }
 
+  @override
   int getScore(Player player) {
-    final total = mapCardValueRules(player.hand);
-    // final total = player.hand
-    //     .fold<int>(0, (sum, card) => sum + mapCardValueForBlackjack(card, sum));
-    print(total);
-    return total;
+    return mapCardValueRules(player.hand);
+  }
+
+  @override
+  GameState getGameState() {
+    return gameState;
+  }
+
+  @override
+  String getWinner() {
+    if (GameState.dealerWon == gameState) {
+      return "Dealer";
+    }
+    if (GameState.playerWon == gameState) {
+      return "You";
+    }
+    return "Nobody";
   }
 }
 
@@ -67,19 +120,24 @@ int mapCardValueRules(List<PlayingCard> cards) {
   final sumStandardCards = getSumOfStandardCards(standardCards);
 
   int acesAmount = cards.length - standardCards.length;
+  print("acesAmount: $acesAmount");
   if (acesAmount == 0) {
     return sumStandardCards;
   }
 
+  print("sumStandardCards: $sumStandardCards");
   // Special case: Ace could be value 1 or 11
   final pointsLeft = HIGHES_SCORE_VALUE - sumStandardCards;
   final oneAceIsEleven = 11 + (acesAmount - 1);
 
   // One Ace with value 11 fits
-  if (pointsLeft > oneAceIsEleven) {
+  if (pointsLeft >= oneAceIsEleven) {
+    print(
+        "sumStandardCards + oneAceIsEleven: ${sumStandardCards + oneAceIsEleven}");
     return sumStandardCards + oneAceIsEleven;
   }
 
+  print("sumStandardCards + acesAmount: ${sumStandardCards + acesAmount}");
   return sumStandardCards + acesAmount;
 }
 

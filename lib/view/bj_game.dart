@@ -9,79 +9,140 @@ import '../services/service_locator.dart';
 
 GameService _gameService = getIt<GameService>();
 
-class BlackJoackGame extends StatefulWidget {
-  const BlackJoackGame({super.key});
+class BlackJackGame extends StatefulWidget {
+  const BlackJackGame({super.key});
 
   @override
-  State<BlackJoackGame> createState() => _BlackJoackGameState();
+  State<BlackJackGame> createState() => _BlackJackGameState();
 }
 
-class _BlackJoackGameState extends State<BlackJoackGame> {
+class _BlackJackGameState extends State<BlackJackGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green[800],
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Spacer(),
           SizedBox(
             height: 180,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+            width: _gameService.getDealer().hand.length * 90,
+            child: FlatCardFan(
               children: [
-                for (var card in _gameService.getPlayer().hand) ...[
-                  cardWidget(card, false)
+                for (var card in _gameService.getDealer().hand) ...[
+                  CardAnimatedWidget(
+                      card,
+                      (_gameService.getGameState() == GameState.playerActive),
+                      3.0)
                 ]
               ],
             ),
           ),
+          const SizedBox(height: 12.5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Text("Won: ${_gameService.getDealer().won}"),
+                  Text("Lost: ${_gameService.getDealer().lose}"),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 25),
           SizedBox(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    _gameService.drawCard();
-                    setState(() {});
-                  },
-                  child:
-                      cardWidget(PlayingCard(Suit.clubs, CardValue.ace), true),
+                Container(
+                  margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_gameService.getGameState() ==
+                          GameState.playerActive) {
+                        _gameService.drawCard();
+                        setState(() {});
+                      }
+                    },
+                    child: cardWidget(
+                        PlayingCard(Suit.joker, CardValue.joker_1), true),
+                  ),
                 ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 20)),
-                  onPressed: () {
-                    _gameService.endTurn();
-                  },
-                  child: const Text('Finish'),
+                Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(fontSize: 20)),
+                          onPressed: () {
+                            if (_gameService.getGameState() ==
+                                GameState.playerActive) {
+                              _gameService.endTurn();
+                            } else {
+                              _gameService.startNewGame();
+                            }
+                            setState(() {
+                              print(_gameService.getGameState());
+                            });
+                          },
+                          child: Text((() {
+                            if (_gameService.getGameState() !=
+                                GameState.playerActive) {
+                              return "New Game";
+                            }
+                            return 'Finish';
+                          })()),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: [
+                                if (_gameService.getGameState() !=
+                                    GameState.playerActive) ...[
+                                  Text("Winner: ${_gameService.getWinner()}"),
+                                  Text(
+                                      "Dealer score: ${_gameService.getScore(_gameService.getDealer())}"),
+                                  Text(
+                                      "Player  score: ${_gameService.getScore(_gameService.getPlayer())}"),
+                                ],
+                              ],
+                            )),
+                      ]),
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Text("Won: ${_gameService.getPlayer().won}"),
+                  Text("Lost: ${_gameService.getPlayer().lose}"),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 12.5),
           SizedBox(
             height: 180,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+            width: _gameService.getPlayer().hand.length * 90,
+            child: FlatCardFan(
               children: [
-                for (var card in _gameService.getBank().hand) ...[
-                  cardWidget(card, false)
-                  // CardAnimatedWidget(card) // TODO
+                for (var card in _gameService.getPlayer().hand) ...[
+                  CardAnimatedWidget(card, false, 3.0)
                 ]
               ],
             ),
           ),
+          const Spacer(),
         ],
       ),
     );
   }
-}
-
-Widget cardWidget(PlayingCard card, bool showBack) {
-  return ClipRRect(
-      child: SizedBox(
-          height: 180,
-          child: PlayingCardView(
-            card: card,
-            showBack: showBack,
-          )));
 }
