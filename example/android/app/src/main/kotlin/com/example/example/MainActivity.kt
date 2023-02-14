@@ -1,4 +1,4 @@
-package com.example.example
+package com.altedev.blackjack
 
 import io.flutter.embedding.android.FlutterActivity
 

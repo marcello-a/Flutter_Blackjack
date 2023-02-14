@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "example" "\0"
+            VALUE "CompanyName", "com.altedev" "\0"
+            VALUE "FileDescription", "blackjack" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "example" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "example.exe" "\0"
-            VALUE "ProductName", "example" "\0"
+            VALUE "InternalName", "blackjack" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.altedev. All rights reserved." "\0"
+            VALUE "OriginalFilename", "Blackjack.exe" "\0"
+            VALUE "ProductName", "Blackjack" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
